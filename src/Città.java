@@ -3,6 +3,7 @@ public class Città {
     private Posizione posizione;
     private int altezza;
     private int id;
+    private String nome;
 
     //getters e setters
     public Posizione getPosizione() {
@@ -23,7 +24,5 @@ public class Città {
     public void setId(int id) {
         this.id = id;
     }
-
-
 
 }
