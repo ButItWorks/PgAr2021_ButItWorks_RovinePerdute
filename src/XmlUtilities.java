@@ -1,18 +1,19 @@
 import javax.xml.stream.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class XmlUtilities {
 
-    public static ArrayList<Citta> leggiMappaCittaXml() throws XMLStreamException, FileNotFoundException {
+    public static ArrayList<Citta> leggiMappaCittaXml(String filename) throws XMLStreamException, FileNotFoundException {
         XMLInputFactory xmlif = null;
         XMLStreamReader xmlr = null;
 
         try {
-            String filepath = "test_file/PgAr_Map_5.xml";
+            String filepath = "test_file/" + filename;
             xmlif = XMLInputFactory.newInstance();
-            xmlr = xmlif.createXMLStreamReader("inputCitta", new FileInputStream(filepath));
+            xmlr = xmlif.createXMLStreamReader(filename, new FileInputStream(filepath));
 
             ArrayList<Citta> mappa = new ArrayList<>();
             Citta citta = new Citta();
@@ -59,7 +60,53 @@ public class XmlUtilities {
     public static void produciOutput() throws XMLStreamException, FileNotFoundException {
         XMLOutputFactory xmlof = null;
         XMLStreamWriter xmlw = null;
-        String filepath = "outputFiles/nomefile.xml";
+        try
+        {
+            xmlof = XMLOutputFactory.newInstance();
+            xmlw = xmlof.createXMLStreamWriter(new FileOutputStream("output/Routes.xml"), "utf-8");
+            xmlw.writeStartDocument("utf-8", "1.0");
+            xmlw.writeStartElement("output");
+            xmlw.writeStartElement("routes");
+
+
+            //Stampa percorso Tonatiuh
+            xmlw.writeStartElement("route");
+            xmlw.writeAttribute("team", "Tonatiuh");
+            xmlw.writeAttribute("cost", Double.toString(Constants.getBenzinaTonathiu()));
+            xmlw.writeAttribute("cities", Integer.toString(Constants.getPercorsoMinimoTonatiuh().size()));
+            for (Citta citta : Constants.getPercorsoMinimoTonatiuh()) {
+                xmlw.writeStartElement("città");
+                xmlw.writeAttribute("id", Integer.toString(citta.getId()));
+                xmlw.writeAttribute("nome", citta.getNome());
+                xmlw.writeEndElement();
+            }
+            xmlw.writeEndElement();
+
+            //Stampa percorso Metztli
+            xmlw.writeStartElement("route");
+            xmlw.writeAttribute("team", "Metztli");
+            xmlw.writeAttribute("cost", Double.toString(Constants.getBenzinaMetztli()));
+            xmlw.writeAttribute("cities", Integer.toString(Constants.getPercorsoMinimoMetztli().size()));
+            for (Citta citta : Constants.getPercorsoMinimoMetztli()) {
+                xmlw.writeStartElement("città");
+                xmlw.writeAttribute("id", Integer.toString(citta.getId()));
+                xmlw.writeAttribute("nome", citta.getNome());
+                xmlw.writeEndElement();
+            }
+            xmlw.writeEndElement();
+
+
+            xmlw.writeEndElement();
+            xmlw.writeEndElement();
+            xmlw.writeEndDocument();
+            xmlw.flush();
+            xmlw.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Errore nella scrittura");
+            System.out.println(e.getMessage());
+        }
 
 
     }

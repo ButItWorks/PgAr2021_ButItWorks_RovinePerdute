@@ -6,18 +6,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CalcoloPercorso {
-
-    private static double benzinaMetztli;
-    private static double benzinaTonathiu;
-
-    public static double getBenzinaMetztli() {
-        return benzinaMetztli;
-    }
-
-    public static double getBenzinaTonathiu() {
-        return benzinaTonathiu;
-    }
-
     private static void resetMappaCitta(ArrayList<Citta> listaCitta) {
         for (Citta c : listaCitta) {
             c.setDistanza(Double.MAX_VALUE);
@@ -29,11 +17,13 @@ public class CalcoloPercorso {
     private static void modificaCitta(Citta cittaPartenza, Citta cittaArrivo, double distanzaTotale) {
         cittaArrivo.setDistanza(distanzaTotale);
         cittaArrivo.setCittaPrecedente(cittaPartenza);
+        /*
         cittaArrivo.setNumeroCittaPrecedenti(cittaPartenza.getNumeroCittaPrecedenti() + 1);
         for (int id : cittaPartenza.getIdPercorso()) {
             cittaArrivo.inserisciIdPercorso(id);
         }
         cittaArrivo.inserisciIdPercorso(cittaPartenza.getId());
+        */
     }
 
     private static Citta getCittaDistanzaMinore(Set<Citta> cittaDisponibili) {
@@ -45,9 +35,11 @@ public class CalcoloPercorso {
             if (distanzaCitta < distanzaMinima) {
                 distanzaMinima = distanzaCitta;
                 cittaDistanzaMinima = citta;
-            } else if(distanzaCitta == distanzaMinima && (citta.getNumeroCittaPrecedenti() + 1) < cittaDistanzaMinima.getNumeroCittaPrecedenti()) {
+            }
+            else if(distanzaCitta == distanzaMinima && (citta.getNumeroCittaPrecedenti() + 1) < cittaDistanzaMinima.getNumeroCittaPrecedenti()) {
                 cittaDistanzaMinima = citta;
-            } else if(distanzaCitta == distanzaMinima && (citta.getNumeroCittaPrecedenti() + 1) == cittaDistanzaMinima.getNumeroCittaPrecedenti() && citta.getMaxIdPercorso() > cittaDistanzaMinima.getMaxIdPercorso()) {
+            }
+            else if(distanzaCitta == distanzaMinima && (citta.getNumeroCittaPrecedenti() + 1) == cittaDistanzaMinima.getNumeroCittaPrecedenti() && citta.getMaxIdPercorso() > cittaDistanzaMinima.getMaxIdPercorso()) {
                 cittaDistanzaMinima = citta;
             }
         }
@@ -63,9 +55,11 @@ public class CalcoloPercorso {
         else if(distanzaTotale == a.getDistanza() && (p.getNumeroCittaPrecedenti() + 1) < a.getNumeroCittaPrecedenti()) {
             modificaCitta(p, a, distanzaTotale);
         }
-        else if(distanzaTotale == a.getDistanza() && (p.getNumeroCittaPrecedenti() + 1) == a.getNumeroCittaPrecedenti() && (p.getMaxIdPercorso() > a.getMaxIdPercorso() || p.getId() > a.getMaxIdPercorso())) {
+        /*
+        else if(distanzaTotale == a.getDistanza() && (p.getNumeroCittaPrecedenti() + 1) == a.getNumeroCittaPrecedenti() && p.getId() > a.getCittaPrecedente().getId() - (p.getMaxIdPercorso() > a.getMaxIdPercorso() || p.getId() > a.getMaxIdPercorso())) {
             modificaCitta(p, a, distanzaTotale);
         }
+        */
     }
 
     public static ArrayList<Citta> calcoloPercorsoMinimo(ArrayList<Citta> mappa, Citta partenza, Citta arrivo, boolean isPercorsoTonatiuh) {
@@ -95,12 +89,6 @@ public class CalcoloPercorso {
                 }
             }
             cittaValutate.add(cittaCorrente);
-        }
-
-        if(isPercorsoTonatiuh) {
-            benzinaTonathiu = mappa.get(mappa.size()-1).getDistanza();
-        } else {
-            benzinaMetztli = mappa.get(mappa.size()-1).getDistanza();
         }
 
         do {

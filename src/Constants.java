@@ -9,8 +9,8 @@ public class Constants {
     private static double benzinaTonathiu = 0;
     private static double benzinaMetztli = 0;
 
-    public static void settaVariabili(String filename) throws XMLStreamException, FileNotFoundException {
-        mappa = XmlUtilities.leggiMappaCittaXml();
+    public static void doEverything(String filename) throws XMLStreamException, FileNotFoundException {
+        mappa = XmlUtilities.leggiMappaCittaXml(filename);
         percorsoMinimoTonatiuh = CalcoloPercorso.calcoloPercorsoMinimo(mappa, mappa.get(0), mappa.get(mappa.size()-1), true);
         benzinaTonathiu = mappa.get(mappa.size()-1).getDistanza();
         percorsoMinimoMetztli = CalcoloPercorso.calcoloPercorsoMinimo(mappa, mappa.get(0), mappa.get(mappa.size()-1), false);
