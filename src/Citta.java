@@ -1,33 +1,22 @@
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Citta {
-
-    private static final int MAX_INIT_PESO = 9999;
-
     private int id;
     private String nome;
-    private Posizione posizione;
+    private Posizione posizione = new Posizione();
     private int altezza;
-    private Map<Citta, Integer> collegamenti = new HashMap<>();
+    private ArrayList<Integer> collegamentiId = new ArrayList<>();
+    private ArrayList<Citta> collegamenti = new ArrayList<>();
+    private Citta cittaPrecedente;
+    private double distanza = Double.MAX_VALUE;
+    private int numeroCittaPrecedenti = Integer.MAX_VALUE;
 
+    //costruttori
     public Citta() {
         super();
-    }
-
-    public Citta(int id, String nome, Posizione posizione, int altezza) {
-        this.id = id;
-        this.nome = nome;
-        this.posizione = posizione;
-        this.altezza = altezza;
-    }
-
-    public Citta(int id, String nome, Posizione posizione, int altezza, HashMap<Citta, Integer> collegamenti) {
-        this.id = id;
-        this.nome = nome;
-        this.posizione = posizione;
-        this.altezza = altezza;
-        this.collegamenti = collegamenti;
     }
 
     //getters e setters
@@ -63,25 +52,53 @@ public class Citta {
         this.altezza = altezza;
     }
 
-    public Map<Citta, Integer> getCollegamenti() {
-        return collegamenti;
+    public ArrayList<Integer> getCollegamentiId() {
+        return collegamentiId;
     }
 
-    public void inserisciCollegamento(Citta citta, int pesoPercorso) {
-        collegamenti.put(citta, pesoPercorso);
+    public void setCollegamentiId(ArrayList<Integer> collegamentiId) {
+        this.collegamentiId = collegamentiId;
+    }
+
+    public ArrayList<Citta> getCollegamenti() { return collegamenti; }
+
+    public Citta getCittaPrecedente() {
+        return cittaPrecedente;
+    }
+
+    public void setCittaPrecedente(Citta cittaPrecedente) {
+        this.cittaPrecedente = cittaPrecedente;
+    }
+
+    public double getDistanza() { return distanza; }
+
+    public void setDistanza(double distanza) {
+        this.distanza = distanza;
+    }
+
+    public int getNumeroCittaPrecedenti() {
+        return numeroCittaPrecedenti;
+    }
+
+    public void setNumeroCittaPrecedenti(int numeroCittaPrecedenti) {
+        this.numeroCittaPrecedenti = numeroCittaPrecedenti;
+    }
+
+    //Metodi collegamento
+    public int getMaxId() {
+        return Collections.max(collegamentiId);
+    }
+
+    public void inserisciCollegamentoId(int id) {
+        this.collegamentiId.add(id);
     }
 
     public void inserisciCollegamento(Citta citta) {
-        collegamenti.put(citta, MAX_INIT_PESO);
+        collegamenti.add(citta);
     }
 
-    public void inserisciPesoCollegamento(Citta cittaDestinazione, int peso) {
-        for (Citta citta : this.collegamenti.keySet()) {
-            if(citta.getNome().equals(cittaDestinazione.getNome())) {
-                this.inserisciCollegamento(cittaDestinazione, peso);
-                break;
-            }
-        }
+    public int dislivello(int altezza) {
+        return Math.abs(this.altezza - altezza);
     }
 
 }

@@ -17,11 +17,18 @@ public class Posizione {
     }
 
     //costruttore
+    public Posizione() {
+        super();
+    }
+
     public Posizione(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-
+    //metodi distanza
+    public double distanzaEuclidea(Posizione p) {
+        return Math.sqrt(Math.pow((this.x - p.getX()), 2) + Math.pow((this.y - p.getY()), 2));
+    }
 
 }
