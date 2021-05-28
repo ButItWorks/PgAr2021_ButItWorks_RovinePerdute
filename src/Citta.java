@@ -10,6 +10,7 @@ public class Citta {
     private int altezza;
     private ArrayList<Integer> collegamentiId = new ArrayList<>();
     private ArrayList<Citta> collegamenti = new ArrayList<>();
+    private ArrayList<Integer> idPercorso = new ArrayList<>();
     private Citta cittaPrecedente;
     private double distanza = Double.MAX_VALUE;
     private int numeroCittaPrecedenti = Integer.MAX_VALUE;
@@ -84,17 +85,22 @@ public class Citta {
         this.numeroCittaPrecedenti = numeroCittaPrecedenti;
     }
 
-    //Metodi collegamento
-    public int getMaxId() {
-        return Collections.max(collegamentiId);
+    public ArrayList<Integer> getIdPercorso() {
+        return idPercorso;
+    }
+
+    //Utilities methods
+
+    public int getMaxIdPercorso() {
+        return Collections.max(idPercorso);
+    }
+
+    public void inserisciIdPercorso(int id) {
+        this.idPercorso.add(id);
     }
 
     public void inserisciCollegamentoId(int id) {
         this.collegamentiId.add(id);
-    }
-
-    public void inserisciCollegamento(Citta citta) {
-        collegamenti.add(citta);
     }
 
     public int dislivello(int altezza) {
